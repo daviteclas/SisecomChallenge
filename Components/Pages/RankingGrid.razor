@@ -1,0 +1,106 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+@using SisecomChallenge.Models
+@using SisecomChallenge.Data
+@using SisecomChallenge.Components.Shared
+@using SisecomChallenge.Components.Pages
+@using static SisecomChallenge.Models.Piloto
+@inject IPilotoService IPilotoService
+
+<PageTitle>Ranking de Pilotos</PageTitle>
+
+<h1>Ranking da Volta Mais Rápida</h1>
+
+<div class="row mb-4 p-3 shadow-sm rounded bg-light filtro">
+    <div class="col-md-3">
+        <label for="filtroCategoria" class="form-label">Categoria</label>
+        <select id="filtroCategoria" class="form-select" @bind="_filtroCategoria">
+            <option value="">Todas</option>
+            @foreach (var categoria in Enum.GetValues<TipoCategoria>())
+            {
+                <option value="@categoria">@categoria</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label for="filtroSexo" class="form-label">Sexo</label>
+        <select id="filtroSexo" class="form-select" @bind="_filtroSexo">
+            <option value="">Todos</option>
+            @foreach (var sexo in Enum.GetValues<TipoSexo>())
+            {
+                <option value="@sexo">@sexo</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label for="filtroPeso" class="form-label">Peso</label>
+        <select id="filtroPeso" class="form-select" @bind="_filtroPeso">
+            <option value="">Todas</option>
+            @foreach (var peso in Enum.GetValues<ClassePeso>())
+            {
+                <option value="@peso">@peso</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label for="filtroTracado" class="form-label">Traçado</label>
+        <select id="filtroTracado" class="form-select" @bind="_filtroTracado">
+            <option value="">Todos</option>
+            @foreach (var tracado in _tracadosDisponiveis)
+            {
+                <option value="@tracado">@tracado</option>
+            }
+        </select>
+    </div>
+</div>
+
+<div class="pilot-grid">
+    @if (PilotosFiltradosEAgrupados.Any())
+    {
+        @foreach (var group in PilotosFiltradosEAgrupados)
+        {
+            <GroupCard Titulo="@group.Key" Pilotos="group.ToList()" />
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Nenhum piloto corresponde aos filtros selecionados.
+        </div>
+    }
+</div>
+
+@code {
+    private List<Piloto> _todosOsPilotos = new();
+
+    private IEnumerable<IGrouping<string, Piloto>> _pilotosAgrupados = Enumerable.Empty<IGrouping<string, Piloto>>();
+
+    private TipoCategoria? _filtroCategoria;
+    private TipoSexo? _filtroSexo;
+    private ClassePeso? _filtroPeso;
+    private string? _filtroTracado = string.Empty;
+
+    private List<string> _tracadosDisponiveis = new();
+
+    private IEnumerable<IGrouping<string, Piloto>> PilotosFiltradosEAgrupados
+    {
+        get
+        {
+            var consulta = _todosOsPilotos
+                .Where(p => !_filtroCategoria.HasValue || p.Categoria == _filtroCategoria.Value)
+                .Where(p => !_filtroSexo.HasValue || p.Sexo == _filtroSexo.Value)
+                .Where(p => !_filtroPeso.HasValue || p.Peso == _filtroPeso.Value)
+                .Where(p => string.IsNullOrEmpty(_filtroTracado) || p.Tracado == _filtroTracado);
+
+            
+            return consulta.GroupBy(p => $"{p.Categoria} - {p.Sexo} - {p.Tracado}");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _todosOsPilotos = await IPilotoService.GetPilotosAsync();
+        _tracadosDisponiveis = _todosOsPilotos.Select(p => p.Tracado).Distinct().OrderBy(t => t).ToList();
+    }
+}

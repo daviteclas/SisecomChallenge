@@ -1,0 +1,51 @@
+﻿h1 {
+    text-align: center;
+}
+
+.filtro {
+    display: flex;
+    justify-content: center;
+    padding: 1em;
+    font-size: 1.3em;
+}
+
+.filtro select {
+    padding: 1em;
+    margin: 1em;
+}
+
+.filtro label {
+    margin: 3px;
+}
+
+.filter-panel {
+    background-color: var(--cor-fundo-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-select {
+    background-color: var(--cor-fundo-escuro);
+    color: var(--cor-texto-principal);
+    border: 1px solid var(--cor-borda);
+}
+
+.form-select:focus {
+    background-color: var(--cor-fundo-escuro);
+    color: var(--cor-texto-principal);
+    border-color: var(--cor-destaque-vermelho);
+    box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.25);
+}
+
+.form-label {
+    font-weight: bold;
+    color: var(--cor-texto-secundario);
+}
+
+.pilot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    gap: 1.5rem;
+}

@@ -1,0 +1,65 @@
+﻿
+:host {
+    display: block;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+:host(:hover) {
+    transform: translateY(-8px);
+    z-index: 10;
+}
+
+.card {
+    background-color: var(--cor-fundo-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1.5rem;
+}
+
+.card-header {
+    background-color: #000;
+    color: var(--cor-destaque-vermelho);
+    border-bottom: 2px solid var(--cor-destaque-vermelho);
+    padding: 0.75rem 1.25rem;
+    text-transform: uppercase;
+}
+
+.list-group-item {
+    list-style: none;
+    background-color: transparent;
+    border-color: var(--cor-borda);
+    color: var(--cor-texto-principal);
+    padding: 1rem 1.25rem;
+    transition: background-color 0.2s ease;
+}
+
+    .list-group-item:not(:last-child) {
+        border-bottom-width: 1px;
+    }
+
+    .list-group-item:hover {
+        background-color: rgba(229, 9, 20, 0.1);
+    }
+
+    .list-group-item strong {
+        font-size: 1.1rem;
+        color: var(--cor-texto-principal);
+    }
+
+    .list-group-item .text-muted {
+        color: var(--cor-texto-secundario) !important;
+    }
+
+.lap-time-badge {
+    background-color: var(--cor-destaque-vermelho);
+    color: #fff;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 50;
+    margin: 20px;
+    padding: 0.5em;
+    border-radius: 5px;
+    min-width: 80px;
+    text-align: center;
+}

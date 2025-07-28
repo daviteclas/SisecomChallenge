@@ -1,0 +1,38 @@
+﻿@using SisecomChallenge.Models
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0">@Titulo</h5>
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            @if (Pilotos.Any())
+            {
+                @foreach(var piloto in Pilotos.OrderBy(p => p.MelhorVolta))
+            {
+                    <li class="list-group-item">
+                        <div>
+                            <strong>@piloto.Nome</strong> (@piloto.Equipe)
+                            <small class="d-block text-muted">@piloto.Nacionalidade</small>
+                        </div>
+                        <div class="lap-time-badge">
+                            @piloto.MelhorVolta.ToString(@"mm\:ss\.fff")
+                        </div>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item">Nenhum piloto encontrado para este grupo.</li>
+            }
+        </ul>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Titulo { get; set; } = "Grupo";
+
+    [Parameter]
+    public IEnumerable<Piloto> Pilotos { get; set; } = Enumerable.Empty<Piloto>();
+}
